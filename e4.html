@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aeon Website</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial, sans-serif;
+    }
+    
+    h1 {
+      text-align: center;
+      padding: 20px;
+      background-color: white;
+      color: black;
+    }
+    
+    canvas {
+      border: 1px solid white;
+      margin: 20px auto;
+      display: block;
+    }
+    
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background-color: white;
+      color: black;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Aeon</h1>
+  <canvas id="canvas" width="500" height="500"></canvas>
+  <button id="eraseButton">Erase</button>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const context = canvas.getContext('2d');
+    let isDrawing = false;
+
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    document.getElementById('eraseButton').addEventListener('click', eraseDrawing);
+
+    function startDrawing(event) {
+      isDrawing = true;
+      draw(event);
+    }
+
+    function draw(event) {
+      if (!isDrawing) return;
+      context.lineWidth = 5;
+      context.lineCap = 'round';
+      context.strokeStyle = 'white';
+      context.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+      context.stroke();
+      context.beginPath();
+      context.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+    }
+
+    function stopDrawing() {
+      isDrawing = false;
+      context.beginPath();
+    }
+
+    function eraseDrawing() {
+      context.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  </script>
+</body>
+</html>
